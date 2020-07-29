@@ -1,7 +1,10 @@
+const rebuild = () => {
+    return ['ncc build index.js', 'git add dist/index.js'];
+};
+
 module.exports = {
     '*.{yml,yaml}': ['prettier --write', 'xo'],
-    '!(*dist).js': ['prettier --write', 'xo'],
+    '*.js': ['prettier --write', 'xo', rebuild],
     '*.{json,md}': 'prettier --write',
     'package.json': ['prettier --write', 'sort-package-json'],
-    './index.js': ['ncc build', 'git add dist/index.js'],
 };
