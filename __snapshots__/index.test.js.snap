@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`index should call run cdk commands with correct arguments 1`] = `
+Object {
+  "AWS_ACCOUNT_ID": "1234",
+  "AWS_ROLE_NAME": "role",
+  "AWS_STACK_NAME": "stack",
+  "INFRASTRUCTURE_LOCATION": ".",
+}
+`;

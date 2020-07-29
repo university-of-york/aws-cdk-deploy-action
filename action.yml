@@ -1,0 +1,26 @@
+name: 'AWS CDK Deploy Action'
+description: 'Deploy AWS CDK Stack'
+branding:
+    icon: 'upload-cloud'
+    color: 'blue'
+inputs:
+    AWS_ACCOUNT_ID:
+        description: 'Target account for the deployment'
+        required: true
+    AWS_REGION:
+        required: false
+        description: 'Target region for the deployment'
+        default: 'eu-west-1'
+    AWS_ROLE_NAME:
+        required: true
+        description: 'Role name with permissions for the deployment'
+    INFRASTRUCTURE_LOCATION:
+        required: false
+        description: 'Local path where cdk infrastructure code lives'
+        default: './infrastructure'
+    AWS_STACK_NAME:
+        required: true
+        description: 'Name of the stack'
+runs:
+    using: 'node12'
+    main: 'dist/index.js'

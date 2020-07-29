@@ -15,11 +15,12 @@
     "author": "",
     "main": "index.js",
     "scripts": {
-        "lint": "lint-staged"
+        "lint": "lint-staged",
+        "test": "jest --runInBand"
     },
     "husky": {
         "hooks": {
-            "pre-commit": "npm run lint"
+            "pre-commit": "npm t && npm run lint"
         }
     },
     "xo": {
@@ -54,6 +55,7 @@
     "devDependencies": {
         "@zeit/ncc": "^0.22.3",
         "husky": "^4.2.5",
+        "jest": "^26.1.0",
         "lint-staged": "^10.2.11",
         "prettier": "^2.0.5",
         "sort-package-json": "^1.44.0",
