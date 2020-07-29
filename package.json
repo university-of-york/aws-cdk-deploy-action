@@ -1,0 +1,62 @@
+{
+    "name": "@university-of-york/aws-cdk-deploy-action",
+    "version": "1.0.0",
+    "description": "This action deploys AWS CDK Stacks through yaml files.",
+    "keywords": [],
+    "homepage": "https://github.com/university-of-york/aws-cdk-deploy-action#readme",
+    "bugs": {
+        "url": "https://github.com/university-of-york/aws-cdk-deploy-action/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/university-of-york/aws-cdk-deploy-action.git"
+    },
+    "license": "MIT",
+    "author": "",
+    "main": "index.js",
+    "scripts": {
+        "lint": "lint-staged"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm run lint"
+        }
+    },
+    "xo": {
+        "extends": [
+            "prettier"
+        ],
+        "overrides": [
+            {
+                "files": "**/*.test.js",
+                "env": "jest"
+            }
+        ],
+        "rules": {
+            "capitalized-comments": "off",
+            "camelcase": "off",
+            "indent": "off",
+            "unicorn/filename-case": "off",
+            "prettier/prettier": "off"
+        },
+        "space": true
+    },
+    "prettier": {
+        "singleQuote": true,
+        "tabWidth": 4,
+        "trailingComma": "es5"
+    },
+    "dependencies": {
+        "@actions/core": "^1.2.4",
+        "execa": "^4.0.3",
+        "lodash": "^4.17.19"
+    },
+    "devDependencies": {
+        "@zeit/ncc": "^0.22.3",
+        "husky": "^4.2.5",
+        "lint-staged": "^10.2.11",
+        "prettier": "^2.0.5",
+        "sort-package-json": "^1.44.0",
+        "xo": "^0.32.1"
+    }
+}
