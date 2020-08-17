@@ -13,10 +13,16 @@ describe('index', () => {
     afterAll(() => jest.restoreAllMocks());
 
     it('should call run cdk commands with correct arguments', async () => {
+        // input
         process.env.AWS_ACCOUNT_ID = '1234';
         process.env.AWS_ROLE_NAME = 'role';
         process.env.AWS_STACK_NAME = 'stack';
-        process.env.INFRASTRUCTURE_LOCATION = '.';
+        process.env.INFRASTRUCTURE_PATH = '.';
+        process.env.AWS_REGION = 'some_region';
+
+        // secrets
+        process.env.AWS_ACCESS_KEY_ID = 'secret_id';
+        process.env.AWS_SECRET_ACCESS_KEY = 'secret_password';
 
         await require('./index.js');
 

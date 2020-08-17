@@ -268,40 +268,61 @@ module.exports.default = pathKey;
 
 const execa = __webpack_require__(955);
 
+const getRoleArguments = ({ AWS_ACCOUNT_ID, AWS_ROLE_NAME }) => {
+    return [
+        '--role-arn',
+        `arn:aws:iam::${AWS_ACCOUNT_ID}:role/${AWS_ROLE_NAME}`,
+    ].join('=');
+};
+
+const getStackArguments = ({ AWS_STACK_NAME }) => {
+    return ['--toolkit-stack-name', `${AWS_STACK_NAME}-cdk-toolkit`].join('=');
+};
+
+const getStackEnvironment = ({ AWS_ACCOUNT_ID, AWS_REGION }) =>
+    [AWS_ACCOUNT_ID, AWS_REGION].join('/');
+
 const getSharedArguments = ({
     AWS_ACCOUNT_ID,
     AWS_ROLE_NAME,
     AWS_STACK_NAME,
-}) => [
-    '--role-arn',
-    `arn:aws:iam::${AWS_ACCOUNT_ID}:role/${AWS_ROLE_NAME}`,
-    '--toolkit-stack-name',
-    `${AWS_STACK_NAME}-cdk-toolkit`,
-];
+}) =>
+    [
+        AWS_ROLE_NAME && getRoleArguments({ AWS_ROLE_NAME, AWS_ACCOUNT_ID }),
+        getStackArguments({ AWS_STACK_NAME }),
+    ].filter(Boolean);
+
+const getApproval = () => '--require-approval=never';
 
 const runCdkCommands = async ({
     AWS_ACCOUNT_ID,
     AWS_ROLE_NAME,
+    AWS_REGION,
     AWS_STACK_NAME,
-    INFRASTRUCTURE_LOCATION,
+    INFRASTRUCTURE_PATH,
 }) => {
-    await execa('cd', [INFRASTRUCTURE_LOCATION]);
     const sharedArguments = getSharedArguments({
         AWS_ACCOUNT_ID,
         AWS_ROLE_NAME,
         AWS_STACK_NAME,
     });
 
-    await execa('npx', ['cdk', 'bootstrap', '--', ...sharedArguments]);
+    await execa(
+        `npx`,
+        [
+            'cdk',
+            'bootstrap',
+            `aws://${getStackEnvironment({ AWS_ACCOUNT_ID, AWS_REGION })}`,
+            ...sharedArguments,
+        ],
+        {
+            cwd: INFRASTRUCTURE_PATH,
+        }
+    );
 
-    return execa('npx', [
-        'cdk',
-        'deploy',
-        '--',
-        '--require-approval',
-        'never',
-        ...sharedArguments,
-    ]);
+    await execa(`npx`, ['cdk', 'deploy', getApproval(), ...sharedArguments], {
+        cwd: INFRASTRUCTURE_PATH,
+    });
 };
 
 module.exports = runCdkCommands;
@@ -435,19 +456,23 @@ module.exports = require("os");
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
 const core = __webpack_require__(470);
-const _ = __webpack_require__(557);
+const { mapValues, keyBy } = __webpack_require__(557);
+const validateEnvironmentVariables = __webpack_require__(665);
 const runCdkCommands = __webpack_require__(48);
 const USER_INPUT = [
-    'AWS_ACCOUNT_ID',
+    'AWS_REGION',
     'AWS_ROLE_NAME',
     'AWS_STACK_NAME',
-    'INFRASTRUCTURE_LOCATION',
+    'INFRASTRUCTURE_PATH',
 ];
 
 (async () => {
     try {
-        const userInput = _.mapValues(_.keyBy(USER_INPUT), core.getInput);
-        await runCdkCommands(userInput);
+        const userEnvironment = validateEnvironmentVariables();
+
+        const userInput = mapValues(keyBy(USER_INPUT), core.getInput);
+
+        await runCdkCommands({ ...userEnvironment, ...userInput });
     } catch (error) {
         core.setFailed(error.message);
     }
@@ -19575,6 +19600,44 @@ if (process.platform === 'linux') {
     'SIGUNUSED'
   )
 }
+
+
+/***/ }),
+
+/***/ 665:
+/***/ (function(module) {
+
+const USER_ENVIRONMENT = [
+    'AWS_ACCOUNT_ID',
+    'AWS_ACCESS_KEY_ID',
+    'AWS_SECRET_ACCESS_KEY',
+];
+
+const getMissingVariables = (entries) => {
+    const missingKeys = entries
+        .map(([key, value]) => !value && key)
+        .filter(Boolean);
+
+    if (missingKeys.length > 0) {
+        throw new Error(
+            `Could not find value(s) in environment for: \n${missingKeys.join(
+                '\n'
+            )}`
+        );
+    }
+};
+
+const getEnvironmentEntries = (environmentKeys) =>
+    environmentKeys.map((key) => [key, process.env[key]]);
+
+const validateEnvironmentVariables = () => {
+    const environmentVariablesEntries = getEnvironmentEntries(USER_ENVIRONMENT);
+    getMissingVariables(environmentVariablesEntries);
+
+    return Object.fromEntries(environmentVariablesEntries);
+};
+
+module.exports = validateEnvironmentVariables;
 
 
 /***/ }),
