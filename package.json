@@ -15,6 +15,7 @@
     "author": "",
     "main": "index.js",
     "scripts": {
+        "build": "ncc build index.js",
         "lint": "lint-staged",
         "test": "jest --runInBand"
     },
