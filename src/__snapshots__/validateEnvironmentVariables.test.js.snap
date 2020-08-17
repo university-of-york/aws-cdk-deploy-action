@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should return an object with required environment variables 1`] = `
+Object {
+  "AWS_ACCESS_KEY_ID": "account_id",
+  "AWS_ACCOUNT_ID": "1234",
+  "AWS_SECRET_ACCESS_KEY": "a_password",
+}
+`;
+
+exports[`should throw if any of the required environment variables are missing 1`] = `
+"Error: Could not find value(s) in environment for: 
+AWS_ACCOUNT_ID
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY"
+`;
