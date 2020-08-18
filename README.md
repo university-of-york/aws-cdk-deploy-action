@@ -18,30 +18,32 @@ jobs:
             - uses: actions/checkout@v2
             - uses: university-of-york/aws-cdk-deploy-action@v1.0
               with:
-                  AWS_REGION: 'eu-west-1'
-                  AWS_ACCOUNT_ID: ''
                   AWS_STACK_NAME: 'my-stack-name'
                   AWS_ROLE_NAME: 'DeploymentRole'
-                  INFRASTRUCTURE_LOCATION: '.'
+                  AWS_REGION: 'us-east-1'
+                  INFRASTRUCTURE_PATH: '.'
               env:
+                  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
                   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 ```
 
 ### Inputs
 
--   `AWS_ACCOUNT_ID` - [**Required**]. Target aws account for the deployment.
-    -   Type: `string`
 -   `AWS_STACK_NAME` - [**Required**]. The Stack name that is going to be published.
     -   Type: `string`
--   `AWS_REGION` - [Optional]. AWS Region where to deploy the CloudFormation Stack.
-    -   Type: `string`
-    -   Default: 'eu-west-1'
 -   `AWS_ROLE_NAME` - [**Required**]. The name of the IAM role to use for the deployment step
     -   Type: `string`
+-   `INFRASTRUCTURE_PATH` - [**Required**]. Path to where infrastructure lives
+    -   Type: `string`
+-   `AWS_REGION` - [**Optional**]. AWS Target region for the deployment
+    -   Type: `string`
+    -   Default: `eu-west-1`
 
 ### Environment variables
 
+-   `AWS_ACCOUNT_ID` - [**Required**]. Target aws account for the deployment.
+    -   Type: `string`
 -   `AWS_ACCESS_KEY_ID` - [**Required**]. AWS Access Key ID.
     -   Type: `string`
 -   `AWS_SECRET_ACCESS_KEY` - [**Required**]. AWS Secret Access Key.

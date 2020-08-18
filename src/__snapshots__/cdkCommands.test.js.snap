@@ -1,42 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`cdkCommands should call execa with correct arguments 1`] = `
-Array [
-  "cd",
-  Array [
-    "some/path/",
-  ],
-]
-`;
-
-exports[`cdkCommands should call execa with correct arguments 2`] = `
+exports[`cdkCommands should call process and execa with correct arguments 1`] = `
 Array [
   "npx",
   Array [
     "cdk",
     "bootstrap",
-    "--",
-    "--role-arn",
-    "arn:aws:iam::account_id:role/role_name",
-    "--toolkit-stack-name",
-    "stack_name-cdk-toolkit",
+    "aws://account_id/eu-west-1",
+    "--role-arn=arn:aws:iam::account_id:role/role_name",
+    "--toolkit-stack-name=stack_name-cdk-toolkit",
   ],
+  Object {
+    "cwd": "some/path/",
+  },
 ]
 `;
 
-exports[`cdkCommands should call execa with correct arguments 3`] = `
+exports[`cdkCommands should call process and execa with correct arguments 2`] = `
 Array [
   "npx",
   Array [
     "cdk",
     "deploy",
-    "--",
-    "--require-approval",
-    "never",
-    "--role-arn",
-    "arn:aws:iam::account_id:role/role_name",
-    "--toolkit-stack-name",
-    "stack_name-cdk-toolkit",
+    "--require-approval=never",
+    "--role-arn=arn:aws:iam::account_id:role/role_name",
+    "--toolkit-stack-name=stack_name-cdk-toolkit",
   ],
+  Object {
+    "cwd": "some/path/",
+  },
 ]
 `;
