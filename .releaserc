@@ -1,5 +1,0 @@
-{
-    "release": {
-        "branches": ["main", "add-release-action"]
-    }
-}
