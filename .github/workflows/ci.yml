@@ -65,7 +65,7 @@ jobs:
             - name: Install dependencies
               run: npm install --prefer-offline --no-audit
 
-            - name: NPM test
+            - name: Run test
               run: npm t
     lint:
         if: "!contains(github.event.head_commit.message, '[skip ci]')"
@@ -91,7 +91,7 @@ jobs:
             - name: Install dependencies
               run: npm install --prefer-offline --no-audit
 
-            - name: NPM test
+            - name: Run linter
               run: npm run lint
 
     release:
