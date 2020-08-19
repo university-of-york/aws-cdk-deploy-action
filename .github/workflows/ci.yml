@@ -117,16 +117,14 @@ jobs:
               uses: cycjimmy/semantic-release-action@v2
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  NPM_TOKEN: NULL
+                  NPM_TOKEN: 00000000000000
               with:
                   semantic_version: 17
                   extra_plugins: |
                       @semantic-release/git
                       @semantic-release/changelog@5.0.1
                   dry_run: false
-                  branches: |
-                      main
-                      add-release-action
+                  branch: add-release-action
             - name: Push updates to branch for new version
               if: steps.semantic.outputs.new_release_published == 'true'
               run: 'git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:refs/heads/v${{steps.semantic.outputs.new_release_version}}'
