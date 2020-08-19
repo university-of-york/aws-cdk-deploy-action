@@ -1,5 +1,7 @@
 # AWS CDK Deploy Action
 
+![CI](https://github.com/university-of-york/aws-cdk-deploy-action/workflows/CI/badge.svg)
+
 This action deploys AWS CDK Stacks through yaml files.
 
 ## Usage
@@ -52,6 +54,39 @@ jobs:
 ## Development
 
 PRs are welcome.
+
+### Commits
+
+The project uses [semantic-release](https://github.com/semantic-release/semantic-release) to:
+
+-   tag and version
+-   tracking the changes in CHANGELOG.md
+
+This is automated via continuous integration.
+
+The only thing you need to worry about is following the default [semantic-release commit message convention](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines):
+
+Quick reference:
+
+patches:
+
+`fix: fixed a bug in our parser`
+
+features:
+
+`feat: we now have a parser \o/`
+
+breaking changes:
+
+```
+perf(parser): remove extra parsing options
+
+BREAKING CHANGE: The extra parsing options have been removed.
+```
+
+other changes:
+
+your choice e.g., docs, chore, etc.
 
 ### Prerequisites
 
