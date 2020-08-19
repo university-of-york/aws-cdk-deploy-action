@@ -13,10 +13,11 @@
     },
     "license": "MIT",
     "author": "",
-    "main": "index.js",
+    "main": "dist/index.js",
     "scripts": {
         "build": "ncc build index.js",
         "lint": "lint-staged",
+        "semantic-release": "semantic-release",
         "test": "jest --runInBand"
     },
     "husky": {
@@ -59,6 +60,7 @@
         "jest": "^26.1.0",
         "lint-staged": "^10.2.11",
         "prettier": "^2.0.5",
+        "semantic-release": "^17.1.1",
         "sort-package-json": "^1.44.0",
         "xo": "^0.32.1"
     }
