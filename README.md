@@ -70,14 +70,20 @@ Quick reference:
 
 patches:
 
-\$ git commit -a -m "fix: fixed a bug in our parser"
+`fix: fixed a bug in our parser`
+
 features:
 
-\$ git commit -a -m "feat: we now have a parser \o/"
+`feat: we now have a parser \o/`
+
 breaking changes:
 
-\$ git commit -a -m "feat: introduces a new parsing library
-BREAKING CHANGE: new library does not support foo-construct"
+```
+perf(parser): remove extra parsing options
+
+BREAKING CHANGE: The extra parsing options have been removed.
+```
+
 other changes:
 
 your choice e.g., docs, chore, etc.
