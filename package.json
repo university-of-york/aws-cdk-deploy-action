@@ -22,7 +22,8 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "npm t && npm run lint"
+            "pre-commit": "npm t && npm run lint",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },
     "xo": {
@@ -55,6 +56,11 @@
         "lodash": "^4.17.19"
     },
     "devDependencies": {
+        "@commitlint/cli": "^9.1.2",
+        "@commitlint/config-conventional": "^9.1.2",
+        "@semantic-release/changelog": "^5.0.1",
+        "@semantic-release/commit-analyzer": "^8.0.1",
+        "@semantic-release/release-notes-generator": "^9.0.1",
         "@zeit/ncc": "^0.22.3",
         "husky": "^4.2.5",
         "jest": "^26.1.0",
