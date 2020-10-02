@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.0.2...v1.0.3) (2020-10-02)
+
+
+### Bug Fixes
+
+*  error during github action ([be27f52](https://github.com/university-of-york/aws-cdk-deploy-action/commit/be27f5252580cce097b4bb06500ab02e17bd408f))
+
 ## [1.0.2](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.0.1...v1.0.2) (2020-10-02)
 
 
