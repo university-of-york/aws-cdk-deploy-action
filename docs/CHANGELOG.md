@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.0.1...v1.0.2) (2020-10-02)
+
+
+### Bug Fixes
+
+* update release configuration, bump @actions/core to 1.2.6 ([2ae729d](https://github.com/university-of-york/aws-cdk-deploy-action/commit/2ae729d5890b3a538067b87cf4be263759346fd9))
+
 ## [1.0.1](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.0.0...v1.0.1) (2020-09-16)
 
 
