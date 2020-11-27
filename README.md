@@ -41,6 +41,9 @@ jobs:
 -   `AWS_REGION` - [**Optional**]. AWS Target region for the deployment
     -   Type: `string`
     -   Default: `eu-west-1`
+-   `SKIP_BOOTSTRAP` - [**Optional**]. Skip running `cdk bootstrap`.
+    -   Type: `string`
+    -   Default: `false`
 
 ### Environment variables
 

@@ -9,5 +9,6 @@ Object {
   "AWS_SECRET_ACCESS_KEY": "secret_password",
   "AWS_STACK_NAME": "stack",
   "INFRASTRUCTURE_PATH": ".",
+  "SKIP_BOOTSTRAP": "false",
 }
 `;
