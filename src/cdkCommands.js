@@ -40,7 +40,7 @@ const runCdkCommands = async ({
         AWS_STACK_NAME,
     });
 
-    if (SKIP_BOOTSTRAP === 'false') {
+    if (SKIP_BOOTSTRAP !== 'true') {
         await execa(
             `npx`,
             [
