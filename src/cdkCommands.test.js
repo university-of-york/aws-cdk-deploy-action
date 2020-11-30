@@ -4,6 +4,8 @@ const runCdkCommands = require('./cdkCommands');
 jest.mock('execa');
 
 describe('cdkCommands', () => {
+    beforeEach(() => jest.clearAllMocks());
+
     it('should call process and execa with correct arguments', async () => {
         process.chdir = jest.fn();
 
@@ -32,6 +34,7 @@ describe('cdkCommands', () => {
             SKIP_BOOTSTRAP: 'true',
         });
 
-        expect(execa.mock.calls[2]).toMatchSnapshot();
+        expect(execa).toHaveBeenCalledTimes(1);
+        expect(execa.mock.calls[0]).toMatchSnapshot();
     });
 });
