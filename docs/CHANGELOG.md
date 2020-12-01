@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.0.3...v1.1.0) (2020-12-01)
+
+
+### Features
+
+* Allow skipping `cdk bootstrap` ([c168266](https://github.com/university-of-york/aws-cdk-deploy-action/commit/c1682666d4983e8b714eaf9f57accb9a933aa303))
+
 ## [1.0.3](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.0.2...v1.0.3) (2020-10-02)
 
 
