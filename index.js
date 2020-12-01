@@ -7,6 +7,7 @@ const USER_INPUT = [
     'AWS_ROLE_NAME',
     'AWS_STACK_NAME',
     'INFRASTRUCTURE_PATH',
+    'SKIP_BOOTSTRAP',
 ];
 
 (async () => {

@@ -18,6 +18,10 @@ inputs:
         required: false
         description: 'Target region for the deployment'
         default: eu-west-1
+    SKIP_BOOTSTRAP:
+        required: false
+        description: 'Skip running CDK bootstrap'
+        default: 'false'
 runs:
     using: 'node12'
     main: 'dist/index.js'

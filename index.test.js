@@ -19,6 +19,7 @@ describe('index', () => {
         process.env.AWS_STACK_NAME = 'stack';
         process.env.INFRASTRUCTURE_PATH = '.';
         process.env.AWS_REGION = 'some_region';
+        process.env.SKIP_BOOTSTRAP = 'false';
 
         // secrets
         process.env.AWS_ACCESS_KEY_ID = 'secret_id';
