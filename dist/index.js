@@ -300,6 +300,7 @@ const runCdkCommands = async ({
     AWS_REGION,
     AWS_STACK_NAME,
     INFRASTRUCTURE_PATH,
+    SKIP_BOOTSTRAP,
 }) => {
     const sharedArguments = getSharedArguments({
         AWS_ACCOUNT_ID,
@@ -307,18 +308,20 @@ const runCdkCommands = async ({
         AWS_STACK_NAME,
     });
 
-    await execa(
-        `npx`,
-        [
-            'cdk',
-            'bootstrap',
-            `aws://${getStackEnvironment({ AWS_ACCOUNT_ID, AWS_REGION })}`,
-            ...sharedArguments,
-        ],
-        {
-            cwd: INFRASTRUCTURE_PATH,
-        }
-    );
+    if (SKIP_BOOTSTRAP !== 'true') {
+        await execa(
+            `npx`,
+            [
+                'cdk',
+                'bootstrap',
+                `aws://${getStackEnvironment({AWS_ACCOUNT_ID, AWS_REGION})}`,
+                ...sharedArguments,
+            ],
+            {
+                cwd: INFRASTRUCTURE_PATH,
+            }
+        );
+    }
 
     await execa(`npx`, ['cdk', 'deploy', getApproval(), ...sharedArguments], {
         cwd: INFRASTRUCTURE_PATH,
@@ -526,6 +529,7 @@ const USER_INPUT = [
     'AWS_ROLE_NAME',
     'AWS_STACK_NAME',
     'INFRASTRUCTURE_PATH',
+    'SKIP_BOOTSTRAP',
 ];
 
 (async () => {
