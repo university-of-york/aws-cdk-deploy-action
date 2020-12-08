@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.1.0...v1.1.1) (2020-12-08)
+
+
+### Bug Fixes
+
+* **#issue-17:** add @semantic-release/exec plugin to ci ([fed75d8](https://github.com/university-of-york/aws-cdk-deploy-action/commit/fed75d8a9714708c8798f0dd4ffab2bef5266ba6)), closes [#issue-17](https://github.com/university-of-york/aws-cdk-deploy-action/issues/issue-17) [#17](https://github.com/university-of-york/aws-cdk-deploy-action/issues/17)
+
 # [1.1.0](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.0.3...v1.1.0) (2020-12-01)
 
 
