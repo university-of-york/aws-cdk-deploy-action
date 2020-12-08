@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should execute git commands 1`] = `
+Array [
+  "git",
+  Array [
+    "push",
+    "https://x-access-token:123@github.com/some-name.git",
+    "--delete",
+    "v1",
+  ],
+]
+`;
+
+exports[`should execute git commands 2`] = `
+Array [
+  "git",
+  Array [
+    "tag",
+    "-f",
+    "v1",
+  ],
+]
+`;
+
+exports[`should execute git commands 3`] = `
+Array [
+  "git",
+  Array [
+    "push",
+    "https://x-access-token:123@github.com/some-name.git",
+    "main",
+    "--tags",
+  ],
+]
+`;
