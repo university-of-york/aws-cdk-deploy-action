@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.1.2...v1.1.3) (2020-12-11)
+
+
+### Bug Fixes
+
+* **deps:** bump ini from 1.3.5 to 1.3.7 ([8027027](https://github.com/university-of-york/aws-cdk-deploy-action/commit/80270278fc74a53716cb9c7978cb0d2028ff68fe))
+
 ## [1.1.2](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.1.1...v1.1.2) (2020-12-11)
 
 
