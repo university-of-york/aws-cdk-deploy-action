@@ -18,6 +18,7 @@
         "build": "ncc build index.js",
         "lint": "lint-staged",
         "semantic-release": "semantic-release",
+        "tag-as-major": "node ./scripts/tag-last-as-major.js",
         "test": "jest --runInBand"
     },
     "husky": {
