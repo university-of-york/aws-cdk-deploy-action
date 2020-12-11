@@ -116,6 +116,9 @@ jobs:
                   registry-url: ${{ secrets.REGISTRY_HOSTNAME }}
                   scope: '@university-of-york'
 
+            - name: Install dependencies
+              run: npm install --prefer-offline --no-audit
+
             - name: Semantic Release
               uses: cycjimmy/semantic-release-action@v2
               env:
