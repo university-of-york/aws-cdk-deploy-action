@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.1.1...v1.1.2) (2020-12-11)
+
+
+### Bug Fixes
+
+* **#issue-17:** run node script with installed node_modules ([b9b03e1](https://github.com/university-of-york/aws-cdk-deploy-action/commit/b9b03e1fd12cc6c9158974d6df20d8fa6debaf67)), closes [#issue-17](https://github.com/university-of-york/aws-cdk-deploy-action/issues/issue-17)
+
 ## [1.1.1](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.1.0...v1.1.1) (2020-12-08)
 
 
