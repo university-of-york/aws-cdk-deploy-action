@@ -18,6 +18,13 @@ inputs:
         required: false
         description: 'Target region for the deployment'
         default: eu-west-1
+    CUSTOM_BOOTSTRAP_ARGUMENTS:
+        required: false
+        description: 'Comma-separated list of user-defined arguments for bootstrapping'
+        default: ''
+    CUSTOM_DEPLOY_ARGUMENTS:
+        required: false
+        description: 'Comma-separated list of user-defined arguments for deployment'
     SKIP_BOOTSTRAP:
         required: false
         description: 'Skip running CDK bootstrap'

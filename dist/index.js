@@ -294,11 +294,21 @@ const getSharedArguments = ({
 
 const getApproval = () => '--require-approval=never';
 
+const getUserDefinedArguments = (userDefinedArguments) => {
+    if (!userDefinedArguments) {
+        return [];
+    }
+
+    return userDefinedArguments.split(',').filter(Boolean);
+};
+
 const runCdkCommands = async ({
     AWS_ACCOUNT_ID,
     AWS_ROLE_NAME,
     AWS_REGION,
     AWS_STACK_NAME,
+    CUSTOM_BOOTSTRAP_ARGUMENTS,
+    CUSTOM_DEPLOY_ARGUMENTS,
     INFRASTRUCTURE_PATH,
     SKIP_BOOTSTRAP,
 }) => {
@@ -314,8 +324,9 @@ const runCdkCommands = async ({
             [
                 'cdk',
                 'bootstrap',
-                `aws://${getStackEnvironment({AWS_ACCOUNT_ID, AWS_REGION})}`,
+                `aws://${getStackEnvironment({ AWS_ACCOUNT_ID, AWS_REGION })}`,
                 ...sharedArguments,
+                ...getUserDefinedArguments(CUSTOM_BOOTSTRAP_ARGUMENTS),
             ],
             {
                 cwd: INFRASTRUCTURE_PATH,
@@ -323,9 +334,19 @@ const runCdkCommands = async ({
         );
     }
 
-    await execa(`npx`, ['cdk', 'deploy', getApproval(), ...sharedArguments], {
-        cwd: INFRASTRUCTURE_PATH,
-    });
+    await execa(
+        `npx`,
+        [
+            'cdk',
+            'deploy',
+            getApproval(),
+            ...sharedArguments,
+            ...getUserDefinedArguments(CUSTOM_DEPLOY_ARGUMENTS),
+        ],
+        {
+            cwd: INFRASTRUCTURE_PATH,
+        }
+    );
 };
 
 module.exports = runCdkCommands;
@@ -387,6 +408,7 @@ function onceStrict (fn) {
 
 "use strict";
 
+const {constants: BufferConstants} = __webpack_require__(293);
 const pump = __webpack_require__(453);
 const bufferStream = __webpack_require__(625);
 
@@ -412,7 +434,8 @@ async function getStream(inputStream, options) {
 	let stream;
 	await new Promise((resolve, reject) => {
 		const rejectPromise = error => {
-			if (error) { // A null check
+			// Don't retrieve an oversized buffer.
+			if (error && stream.getBufferedLength() <= BufferConstants.MAX_LENGTH) {
 				error.bufferedData = stream.getBufferedValue();
 			}
 
@@ -520,29 +543,10 @@ exports.issueCommand = issueCommand;
 /***/ 104:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
+const handlerFactory = __webpack_require__(133);
 const core = __webpack_require__(470);
-const { mapValues, keyBy } = __webpack_require__(557);
-const validateEnvironmentVariables = __webpack_require__(665);
-const runCdkCommands = __webpack_require__(48);
-const USER_INPUT = [
-    'AWS_REGION',
-    'AWS_ROLE_NAME',
-    'AWS_STACK_NAME',
-    'INFRASTRUCTURE_PATH',
-    'SKIP_BOOTSTRAP',
-];
 
-(async () => {
-    try {
-        const userEnvironment = validateEnvironmentVariables();
-
-        const userInput = mapValues(keyBy(USER_INPUT), core.getInput);
-
-        await runCdkCommands({ ...userEnvironment, ...userInput });
-    } catch (error) {
-        core.setFailed(error.message);
-    }
-})();
+handlerFactory().catch((error) => core.setFailed(error.message));
 
 
 /***/ }),
@@ -551,6 +555,35 @@ const USER_INPUT = [
 /***/ (function(module) {
 
 module.exports = require("child_process");
+
+/***/ }),
+
+/***/ 133:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+const core = __webpack_require__(470);
+const { mapValues, keyBy } = __webpack_require__(557);
+const validateEnvironmentVariables = __webpack_require__(665);
+const runCdkCommands = __webpack_require__(48);
+const USER_INPUT = [
+    'AWS_REGION',
+    'AWS_ROLE_NAME',
+    'AWS_STACK_NAME',
+    'CUSTOM_BOOTSTRAP_ARGUMENTS',
+    'CUSTOM_DEPLOY_ARGUMENTS',
+    'INFRASTRUCTURE_PATH',
+    'SKIP_BOOTSTRAP',
+];
+
+const handlerFactory = async () => {
+    const userEnvironment = validateEnvironmentVariables();
+    const userInput = mapValues(keyBy(USER_INPUT), core.getInput);
+
+    return runCdkCommands({ ...userEnvironment, ...userInput });
+};
+
+module.exports = handlerFactory;
+
 
 /***/ }),
 
@@ -685,6 +718,13 @@ standard:"posix"};
 const SIGRTMIN=34;
 const SIGRTMAX=64;exports.SIGRTMAX=SIGRTMAX;
 //# sourceMappingURL=realtime.js.map
+
+/***/ }),
+
+/***/ 293:
+/***/ (function(module) {
+
+module.exports = require("buffer");
 
 /***/ }),
 
@@ -1768,14 +1808,15 @@ module.exports = makeError;
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.17.19';
+  var VERSION = '4.17.21';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
 
   /** Error message constants. */
   var CORE_ERROR_TEXT = 'Unsupported core-js use. Try https://npms.io/search?q=ponyfill.',
-      FUNC_ERROR_TEXT = 'Expected a function';
+      FUNC_ERROR_TEXT = 'Expected a function',
+      INVALID_TEMPL_VAR_ERROR_TEXT = 'Invalid `variable` option passed into `_.template`';
 
   /** Used to stand-in for `undefined` hash values. */
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -1908,10 +1949,11 @@ module.exports = makeError;
   var reRegExpChar = /[\\^$.*+?()[\]{}|]/g,
       reHasRegExpChar = RegExp(reRegExpChar.source);
 
-  /** Used to match leading and trailing whitespace. */
-  var reTrim = /^\s+|\s+$/g,
-      reTrimStart = /^\s+/,
-      reTrimEnd = /\s+$/;
+  /** Used to match leading whitespace. */
+  var reTrimStart = /^\s+/;
+
+  /** Used to match a single whitespace character. */
+  var reWhitespace = /\s/;
 
   /** Used to match wrap detail comments. */
   var reWrapComment = /\{(?:\n\/\* \[wrapped with .+\] \*\/)?\n?/,
@@ -1920,6 +1962,18 @@ module.exports = makeError;
 
   /** Used to match words composed of alphanumeric characters. */
   var reAsciiWord = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g;
+
+  /**
+   * Used to validate the `validate` option in `_.template` variable.
+   *
+   * Forbids characters which could potentially change the meaning of the function argument definition:
+   * - "()," (modification of function parameters)
+   * - "=" (default value)
+   * - "[]{}" (destructuring of function parameters)
+   * - "/" (beginning of a comment)
+   * - whitespace
+   */
+  var reForbiddenIdentifierChars = /[()=,{}\[\]\/\s]/;
 
   /** Used to match backslashes in property paths. */
   var reEscapeChar = /\\(\\)?/g;
@@ -2750,6 +2804,19 @@ module.exports = makeError;
   }
 
   /**
+   * The base implementation of `_.trim`.
+   *
+   * @private
+   * @param {string} string The string to trim.
+   * @returns {string} Returns the trimmed string.
+   */
+  function baseTrim(string) {
+    return string
+      ? string.slice(0, trimmedEndIndex(string) + 1).replace(reTrimStart, '')
+      : string;
+  }
+
+  /**
    * The base implementation of `_.unary` without support for storing metadata.
    *
    * @private
@@ -3080,6 +3147,21 @@ module.exports = makeError;
     return hasUnicode(string)
       ? unicodeToArray(string)
       : asciiToArray(string);
+  }
+
+  /**
+   * Used by `_.trim` and `_.trimEnd` to get the index of the last non-whitespace
+   * character of `string`.
+   *
+   * @private
+   * @param {string} string The string to inspect.
+   * @returns {number} Returns the index of the last non-whitespace character.
+   */
+  function trimmedEndIndex(string) {
+    var index = string.length;
+
+    while (index-- && reWhitespace.test(string.charAt(index))) {}
+    return index;
   }
 
   /**
@@ -14250,7 +14332,7 @@ module.exports = makeError;
       if (typeof value != 'string') {
         return value === 0 ? value : +value;
       }
-      value = value.replace(reTrim, '');
+      value = baseTrim(value);
       var isBinary = reIsBinary.test(value);
       return (isBinary || reIsOctal.test(value))
         ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
@@ -16622,6 +16704,12 @@ module.exports = makeError;
       if (!variable) {
         source = 'with (obj) {\n' + source + '\n}\n';
       }
+      // Throw an error if a forbidden character was found in `variable`, to prevent
+      // potential command injection attacks.
+      else if (reForbiddenIdentifierChars.test(variable)) {
+        throw new Error(INVALID_TEMPL_VAR_ERROR_TEXT);
+      }
+
       // Cleanup code by stripping empty strings.
       source = (isEvaluating ? source.replace(reEmptyStringLeading, '') : source)
         .replace(reEmptyStringMiddle, '$1')
@@ -16735,7 +16823,7 @@ module.exports = makeError;
     function trim(string, chars, guard) {
       string = toString(string);
       if (string && (guard || chars === undefined)) {
-        return string.replace(reTrim, '');
+        return baseTrim(string);
       }
       if (!string || !(chars = baseToString(chars))) {
         return string;
@@ -16770,7 +16858,7 @@ module.exports = makeError;
     function trimEnd(string, chars, guard) {
       string = toString(string);
       if (string && (guard || chars === undefined)) {
-        return string.replace(reTrimEnd, '');
+        return string.slice(0, trimmedEndIndex(string) + 1);
       }
       if (!string || !(chars = baseToString(chars))) {
         return string;
@@ -17344,7 +17432,7 @@ module.exports = makeError;
      * // => [{ 'a': 4, 'b': 5, 'c': 6 }]
      *
      * // Checking for several possible values
-     * _.filter(users, _.overSome([_.matches({ 'a': 1 }), _.matches({ 'a': 4 })]));
+     * _.filter(objects, _.overSome([_.matches({ 'a': 1 }), _.matches({ 'a': 4 })]));
      * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matches(source) {
@@ -17381,7 +17469,7 @@ module.exports = makeError;
      * // => { 'a': 4, 'b': 5, 'c': 6 }
      *
      * // Checking for several possible values
-     * _.filter(users, _.overSome([_.matchesProperty('a', 1), _.matchesProperty('a', 4)]));
+     * _.filter(objects, _.overSome([_.matchesProperty('a', 1), _.matchesProperty('a', 4)]));
      * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matchesProperty(path, srcValue) {
@@ -19720,50 +19808,44 @@ const mimicFn = __webpack_require__(750);
 
 const calledFunctions = new WeakMap();
 
-const oneTime = (fn, options = {}) => {
-	if (typeof fn !== 'function') {
+const onetime = (function_, options = {}) => {
+	if (typeof function_ !== 'function') {
 		throw new TypeError('Expected a function');
 	}
 
-	let ret;
-	let isCalled = false;
+	let returnValue;
 	let callCount = 0;
-	const functionName = fn.displayName || fn.name || '<anonymous>';
+	const functionName = function_.displayName || function_.name || '<anonymous>';
 
-	const onetime = function (...args) {
+	const onetime = function (...arguments_) {
 		calledFunctions.set(onetime, ++callCount);
 
-		if (isCalled) {
-			if (options.throw === true) {
-				throw new Error(`Function \`${functionName}\` can only be called once`);
-			}
-
-			return ret;
+		if (callCount === 1) {
+			returnValue = function_.apply(this, arguments_);
+			function_ = null;
+		} else if (options.throw === true) {
+			throw new Error(`Function \`${functionName}\` can only be called once`);
 		}
 
-		isCalled = true;
-		ret = fn.apply(this, args);
-		fn = null;
-
-		return ret;
+		return returnValue;
 	};
 
-	mimicFn(onetime, fn);
+	mimicFn(onetime, function_);
 	calledFunctions.set(onetime, callCount);
 
 	return onetime;
 };
 
-module.exports = oneTime;
+module.exports = onetime;
 // TODO: Remove this for the next major release
-module.exports.default = oneTime;
+module.exports.default = onetime;
 
-module.exports.callCount = fn => {
-	if (!calledFunctions.has(fn)) {
-		throw new Error(`The given function \`${fn.name}\` is not wrapped by the \`onetime\` package`);
+module.exports.callCount = function_ => {
+	if (!calledFunctions.has(function_)) {
+		throw new Error(`The given function \`${function_.name}\` is not wrapped by the \`onetime\` package`);
 	}
 
-	return calledFunctions.get(fn);
+	return calledFunctions.get(function_);
 };
 
 
@@ -19855,27 +19937,21 @@ const joinCommand = (file, args = []) => {
 	return [file, ...args].join(' ');
 };
 
-// Allow spaces to be escaped by a backslash if not meant as a delimiter
-const handleEscaping = (tokens, token, index) => {
-	if (index === 0) {
-		return [token];
-	}
-
-	const previousToken = tokens[tokens.length - 1];
-
-	if (previousToken.endsWith('\\')) {
-		return [...tokens.slice(0, -1), `${previousToken.slice(0, -1)} ${token}`];
-	}
-
-	return [...tokens, token];
-};
-
 // Handle `execa.command()`
 const parseCommand = command => {
-	return command
-		.trim()
-		.split(SPACES_REGEXP)
-		.reduce(handleEscaping, []);
+	const tokens = [];
+	for (const token of command.trim().split(SPACES_REGEXP)) {
+		// Allow spaces to be escaped by a backslash if not meant as a delimiter
+		const previousToken = tokens[tokens.length - 1];
+		if (previousToken && previousToken.endsWith('\\')) {
+			// Merge previous token with current one
+			tokens[tokens.length - 1] = `${previousToken.slice(0, -1)} ${token}`;
+		} else {
+			tokens.push(token);
+		}
+	}
+
+	return tokens;
 };
 
 module.exports = {
@@ -20535,8 +20611,12 @@ module.exports.node = (scriptPath, args, options = {}) => {
 	}
 
 	const stdio = normalizeStdio.node(options);
+	const defaultExecArgv = process.execArgv.filter(arg => !arg.startsWith('--inspect'));
 
-	const {nodePath = process.execPath, nodeOptions = process.execArgv} = options;
+	const {
+		nodePath = process.execPath,
+		nodeOptions = defaultExecArgv
+	} = options;
 
 	return execa(
 		nodePath,

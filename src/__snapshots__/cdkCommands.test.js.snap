@@ -32,6 +32,42 @@ Array [
 ]
 `;
 
+exports[`cdkCommands should call process and execa with user-defined arguments 1`] = `
+Array [
+  "npx",
+  Array [
+    "cdk",
+    "bootstrap",
+    "aws://account_id/eu-west-1",
+    "--role-arn=arn:aws:iam::account_id:role/role_name",
+    "--toolkit-stack-name=stack_name-cdk-toolkit",
+    "--testargument=abc",
+    "--all",
+  ],
+  Object {
+    "cwd": "some/path/",
+  },
+]
+`;
+
+exports[`cdkCommands should call process and execa with user-defined arguments 2`] = `
+Array [
+  "npx",
+  Array [
+    "cdk",
+    "deploy",
+    "--require-approval=never",
+    "--role-arn=arn:aws:iam::account_id:role/role_name",
+    "--toolkit-stack-name=stack_name-cdk-toolkit",
+    "--testargument=abc",
+    "--all",
+  ],
+  Object {
+    "cwd": "some/path/",
+  },
+]
+`;
+
 exports[`cdkCommands should not call bootstrap when SKIP_BOOTSTRAP is not false 1`] = `
 Array [
   "npx",

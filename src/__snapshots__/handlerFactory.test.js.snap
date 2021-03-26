@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handlerFactory should call run cdk commands with correct arguments 1`] = `
+Object {
+  "AWS_ACCESS_KEY_ID": "secret_id",
+  "AWS_ACCOUNT_ID": "1234",
+  "AWS_REGION": "some_region",
+  "AWS_ROLE_NAME": "role",
+  "AWS_SECRET_ACCESS_KEY": "secret_password",
+  "AWS_STACK_NAME": "stack",
+  "CUSTOM_BOOTSTRAP_ARGUMENTS": undefined,
+  "CUSTOM_DEPLOY_ARGUMENTS": undefined,
+  "INFRASTRUCTURE_PATH": ".",
+  "SKIP_BOOTSTRAP": "false",
+}
+`;
+
+exports[`handlerFactory should call run cdk commands with user-defined arguments 1`] = `
+Object {
+  "AWS_ACCESS_KEY_ID": "secret_id",
+  "AWS_ACCOUNT_ID": "1234",
+  "AWS_REGION": "some_region",
+  "AWS_ROLE_NAME": "role",
+  "AWS_SECRET_ACCESS_KEY": "secret_password",
+  "AWS_STACK_NAME": "stack",
+  "CUSTOM_BOOTSTRAP_ARGUMENTS": "--testargument=abc,--all",
+  "CUSTOM_DEPLOY_ARGUMENTS": "--testargument=abc,--all",
+  "INFRASTRUCTURE_PATH": ".",
+  "SKIP_BOOTSTRAP": "false",
+}
+`;

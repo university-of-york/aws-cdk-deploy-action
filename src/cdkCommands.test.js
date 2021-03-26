@@ -37,4 +37,23 @@ describe('cdkCommands', () => {
         expect(execa).toHaveBeenCalledTimes(1);
         expect(execa.mock.calls[0]).toMatchSnapshot();
     });
+
+    it('should call process and execa with user-defined arguments', async () => {
+        process.chdir = jest.fn();
+
+        const customArguments = '--testargument=abc,--all';
+        await runCdkCommands({
+            AWS_ACCOUNT_ID: 'account_id',
+            AWS_REGION: 'eu-west-1',
+            AWS_ROLE_NAME: 'role_name',
+            AWS_STACK_NAME: 'stack_name',
+            CUSTOM_DEPLOY_ARGUMENTS: customArguments,
+            CUSTOM_BOOTSTRAP_ARGUMENTS: customArguments,
+            INFRASTRUCTURE_PATH: 'some/path/',
+            SKIP_BOOTSTRAP: 'false',
+        });
+
+        expect(execa.mock.calls[0]).toMatchSnapshot();
+        expect(execa.mock.calls[1]).toMatchSnapshot();
+    });
 });

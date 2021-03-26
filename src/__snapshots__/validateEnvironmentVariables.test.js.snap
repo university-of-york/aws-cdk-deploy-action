@@ -9,8 +9,8 @@ Object {
 `;
 
 exports[`should throw if any of the required environment variables are missing 1`] = `
-"Error: Could not find value(s) in environment for: 
+[Error: Could not find value(s) in environment for: 
 AWS_ACCOUNT_ID
 AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY"
+AWS_SECRET_ACCESS_KEY]
 `;

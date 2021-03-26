@@ -1,11 +1,13 @@
 const validateEnvironmentVariables = require('./validateEnvironmentVariables');
 
-test('should throw if any of the required environment variables are missing', () => {
-    try {
-        validateEnvironmentVariables();
-    } catch (error) {
-        expect(error.toString()).toMatchSnapshot();
-    }
+test('should throw if any of the required environment variables are missing', async () => {
+    process.env.AWS_ACCOUNT_ID = '';
+    process.env.AWS_ACCESS_KEY_ID = '';
+    process.env.AWS_SECRET_ACCESS_KEY = '';
+
+    await expect(async () =>
+        validateEnvironmentVariables()
+    ).rejects.toMatchSnapshot();
 });
 
 test('should return an object with required environment variables', () => {
