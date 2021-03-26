@@ -74,5 +74,9 @@
         "semantic-release": "^17.4.2",
         "sort-package-json": "^1.49.0",
         "xo": "^0.32.1"
+    },
+    "engines": {
+        "node": "^12.19.1",
+        "npm": "^6.14.8"
     }
 }

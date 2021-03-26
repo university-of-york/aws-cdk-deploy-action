@@ -26,11 +26,21 @@ const getSharedArguments = ({
 
 const getApproval = () => '--require-approval=never';
 
+const getUserDefinedArguments = (userDefinedArguments) => {
+    if (!userDefinedArguments) {
+        return [];
+    }
+
+    return userDefinedArguments.split(',').filter(Boolean);
+};
+
 const runCdkCommands = async ({
     AWS_ACCOUNT_ID,
     AWS_ROLE_NAME,
     AWS_REGION,
     AWS_STACK_NAME,
+    CUSTOM_BOOTSTRAP_ARGUMENTS,
+    CUSTOM_DEPLOY_ARGUMENTS,
     INFRASTRUCTURE_PATH,
     SKIP_BOOTSTRAP,
 }) => {
@@ -46,8 +56,9 @@ const runCdkCommands = async ({
             [
                 'cdk',
                 'bootstrap',
-                `aws://${getStackEnvironment({AWS_ACCOUNT_ID, AWS_REGION})}`,
+                `aws://${getStackEnvironment({ AWS_ACCOUNT_ID, AWS_REGION })}`,
                 ...sharedArguments,
+                ...getUserDefinedArguments(CUSTOM_BOOTSTRAP_ARGUMENTS),
             ],
             {
                 cwd: INFRASTRUCTURE_PATH,
@@ -55,9 +66,19 @@ const runCdkCommands = async ({
         );
     }
 
-    await execa(`npx`, ['cdk', 'deploy', getApproval(), ...sharedArguments], {
-        cwd: INFRASTRUCTURE_PATH,
-    });
+    await execa(
+        `npx`,
+        [
+            'cdk',
+            'deploy',
+            getApproval(),
+            ...sharedArguments,
+            ...getUserDefinedArguments(CUSTOM_DEPLOY_ARGUMENTS),
+        ],
+        {
+            cwd: INFRASTRUCTURE_PATH,
+        }
+    );
 };
 
 module.exports = runCdkCommands;

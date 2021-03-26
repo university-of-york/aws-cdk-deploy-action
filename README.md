@@ -44,6 +44,12 @@ jobs:
 -   `SKIP_BOOTSTRAP` - [**Optional**]. Skip running `cdk bootstrap`.
     -   Type: `string`
     -   Default: `false`
+-   `CUSTOM_BOOTSTRAP_ARGUMENTS` - [**Optional**]. Additional user-defined arguments for `cdk bootstrap`.
+    -   Type: `Comma-separated list of user-defined arguments for bootstrapping`
+    -   Default: ''
+-   `CUSTOM_DEPLOY_ARGUMENTS` - [**Optional**]. Additional user-defined arguments for `cdk deploy`.
+    -   Type: `Comma-separated list of user-defined arguments for deploying`
+    -   Default: ''
 
 ### Environment variables
 
