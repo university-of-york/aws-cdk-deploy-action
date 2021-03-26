@@ -66,6 +66,14 @@ PRs are welcome.
 
 ### Commits
 
+The project uses [commitlint](https://github.com/conventional-changelog/commitlint/#what-is-commitlint) to check the format of all commit messages.
+
+When committing via cli: `husky > commit-msg (node v12.x.x)` indicates whether git's `commit-msg` [hook](https://git-scm.com/docs/githooks) has successfully run.
+
+If it has run, any deviation would have stopped the commit from executing.
+When this happens, a (hopefully) helpful message helps correct the message to respect the convention.
+Following conventions is critical to publishing the correct version and changelog.
+
 The project uses [semantic-release](https://github.com/semantic-release/semantic-release) to:
 
 -   tag and version
