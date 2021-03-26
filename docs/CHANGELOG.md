@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.1.3...v1.2.0) (2021-03-26)
+
+
+### Features
+
+* **#issue-27:** add user-defined deploy and bootstrap arguments ([f26307e](https://github.com/university-of-york/aws-cdk-deploy-action/commit/f26307e28dda7f9721a55593cfde8ac5c392e3f3)), closes [#issue-27](https://github.com/university-of-york/aws-cdk-deploy-action/issues/issue-27)
+
 ## [1.1.3](https://github.com/university-of-york/aws-cdk-deploy-action/compare/v1.1.2...v1.1.3) (2020-12-11)
 
 
