@@ -16,14 +16,14 @@
     "main": "dist/index.js",
     "scripts": {
         "build": "ncc build index.js",
-        "lint": "lint-staged",
+        "lint": "xo",
         "semantic-release": "semantic-release",
         "tag-as-major": "node ./scripts/tag-last-as-major.js",
         "test": "jest --runInBand"
     },
     "husky": {
         "hooks": {
-            "pre-commit": "npm t && npm run lint",
+            "pre-commit": "npm t && lint-staged",
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },
