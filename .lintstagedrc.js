@@ -3,8 +3,8 @@ const rebuild = () => {
 };
 
 module.exports = {
-    '*.{yml,yaml}': ['prettier --write', 'xo'],
-    '*.js': ['prettier --write', 'xo', rebuild],
+    '*.{yml,yaml}': ['prettier --write', 'xo --fix'],
+    '*.js': ['prettier --write', 'xo --fix', rebuild],
     '*.{json,md}': 'prettier --write',
     'package.json': ['prettier --write', 'sort-package-json'],
 };
